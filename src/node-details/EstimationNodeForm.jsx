@@ -26,7 +26,11 @@ export default function EstimationNodeForm({ nodeId }) {
     const node = nodes.find((node) => node.id === nodeId);
     const formData = node?.data?.meta?.formData;
     setValue("factor_library", formData?.factor_library);
-    console.log(node);
+    setValue("estimation_factor", formData?.estimation_factor);
+    setValue("estimation_value_column", formData?.estimation_value_column);
+    setValue("estimation_unit_column", formData?.estimation_unit_column);
+    setValue("output_value_column", formData?.output_value_column);
+    setValue("output_unit_column", formData?.output_unit_column);
   }, [nodes]);
 
   return (
