@@ -3,10 +3,18 @@ import { customNodeIdGeneration } from "./customNodeIdGeneration";
 export function convertToNodesEdges(nodesEdges) {
   const nodes = [];
 
+  //  here we have to maintain a mapping for all the nodes old ids and new ids
+  // because the input field contains the old ids, even we create new ids, they cannot be used to
+  // map the edges
+
+  const idMapping = {};
+
   //   here we are creating the nodes for incomming data
   nodesEdges.map((node, i) => {
+    const newId = customNodeIdGeneration(node.type, nodes);
+    idMapping[node.id] = newId;
     nodes.push({
-      id: customNodeIdGeneration(node.type, nodes),
+      id: newId,
       position: { x: 0, y: i * 100 },
       data: {
         type: node.type,
@@ -20,7 +28,7 @@ export function convertToNodesEdges(nodesEdges) {
     });
   });
 
-  const edges = convertToEdges(nodesEdges);
+  const edges = convertToEdges(nodesEdges, idMapping);
   return { nodes, edges };
 }
 
@@ -52,7 +60,7 @@ function convertToFormData(nodeType, columnsData) {
           formData["factor_mappings"] = column.column;
       });
       return formData;
-    case "reportGas":
+    case "report-gas":
       columnsData.map((column) => {
         if (column.name === "report_value_column" && column.column != undefined)
           formData["report_value_column"] = column.column;
@@ -89,16 +97,18 @@ function convertToFormData(nodeType, columnsData) {
   }
 }
 
-function convertToEdges(nodesEdges) {
+function convertToEdges(nodesEdges, idMapping) {
   let edges = [];
   nodesEdges.map((node) => {
     if (node.type === "input") {
       return;
     } else {
+      const newSource = idMapping[node.inputs];
+      const newTarget = idMapping[node.id];
       edges.push({
-        source: node.inputs,
-        target: node.id,
-        id: `edge-${node.inputs}-${node.id}`,
+        source: newSource,
+        target: newTarget,
+        id: `edge-${newSource}-${newTarget}`,
       });
     }
   });

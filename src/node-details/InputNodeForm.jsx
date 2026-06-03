@@ -34,31 +34,43 @@ export default function InputNodeForm({ nodeId }) {
   }, [nodes]);
 
   return (
-    <form className="flex flex-col gap-2" onSubmit={handleSubmit(onSubmit)}>
+    <form className="flex flex-col gap-2 p-4" onSubmit={handleSubmit(onSubmit)}>
       <label>Name</label>
       <input
+        className="border"
         type="text"
         name="name"
         defaultValue="test"
         {...register("name")}
       />
       <label>description</label>
-      <input type="text" {...register("description")} />
+      <input className="border" type="text" {...register("description")} />
       <label>type</label>
-      <input type="text" {...register("type")} />
+      <input type="text" className="border " {...register("type")} />
       <label>module</label>
-      <input type="text" {...register("module")} />
+      <input type="text" className="border " {...register("module")} />
       <label>emission source</label>
       <input
         type="text"
+        className="border "
         name="emissionSouce"
         {...register("emission_source")}
       ></input>
       <label>origin correlation id</label>
-      <input type="text" {...register("origin_correlation_id")}></input>
+      <input
+        type="text"
+        className="border "
+        {...register("origin_correlation_id")}
+      ></input>
       <label>owning business unit</label>
-      <input type="text" {...register("owning_business_unit")}></input>
-      <button type="submit">Submit</button>
+      <input
+        type="text"
+        className="border "
+        {...register("owning_business_unit")}
+      ></input>
+      <button className="border px-3 py-2 hover:bg-green-300" type="submit">
+        Submit
+      </button>
     </form>
   );
 }

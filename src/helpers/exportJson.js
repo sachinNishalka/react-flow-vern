@@ -1,5 +1,5 @@
 export function exportJson(nodes) {
-  console.log(convertNodesToJson(nodes));
+  return convertNodesToJson(nodes);
 }
 
 function convertNodesToJson(nodes) {
@@ -52,7 +52,7 @@ function getColumnData(formData, nodeType) {
           column: formData.factor_mappings,
         },
       ];
-    case "reportGas":
+    case "report-gas":
       return [
         {
           name: "report_value_column",

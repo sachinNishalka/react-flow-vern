@@ -58,7 +58,7 @@
   },
   {
     "id": "report-gas-node",
-    "type": "reportGas",
+    "type": "report-gas",
     "inputs": "report-node",
     "params": {
       "columns": [

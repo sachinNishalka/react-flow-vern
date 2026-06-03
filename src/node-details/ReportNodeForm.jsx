@@ -31,20 +31,27 @@ export default function ReportNodeForm({ nodeId, nodeType }) {
   }, [nodes]);
 
   return (
-    <form className="flex flex-col gap-2" onSubmit={handleSubmit(onSubmit)}>
+    <form className="flex flex-col gap-2 p-4" onSubmit={handleSubmit(onSubmit)}>
       <label>Report Value Column</label>
       <input
+        className="border"
         type="text"
         defaultValue="test"
         {...register("report_value_column")}
       />
       <label>Report Qty Column</label>
-      <input type="text" {...register("report_qty_column")} />
+      <input
+        className="border"
+        type="text"
+        {...register("report_qty_column")}
+      />
 
       <label>Factor Mappings</label>
-      <input type="text" {...register("factor_mappings")} />
+      <input className="border" type="text" {...register("factor_mappings")} />
 
-      <button type="submit">Submit</button>
+      <button className="border px-3 py-2 hover:bg-green-300" type="submit">
+        Submit
+      </button>
     </form>
   );
 }

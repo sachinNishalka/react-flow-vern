@@ -22,7 +22,7 @@ export const nodesRegistry = {
     source: true,
     target: true,
   },
-  reportGas: {
+  "report-gas": {
     title: "Report Report Gas Node",
     form: ReportGasNodeForm,
     source: true,
@@ -31,6 +31,12 @@ export const nodesRegistry = {
   estimation: {
     title: "Estimation Node",
     form: EstimationNodeForm,
+    source: true,
+    target: true,
+  },
+  select: {
+    title: "Select Node",
+
     source: true,
     target: true,
   },
