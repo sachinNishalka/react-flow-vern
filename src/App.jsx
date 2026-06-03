@@ -58,8 +58,10 @@ export const initialNodes = [
 // const initialEdges = [{ id: "n1-n2", source: "n1", target: "n2" }];
 
 export default function App() {
-  const [nodes, setNodes] = useState(initialNodes);
-  const [edges, setEdges] = useState([]);
+  const { nodes: sampledataNodes, edges: sampledataEdges } =
+    convertToNodesEdges(sampleData);
+  const [nodes, setNodes] = useState(sampledataNodes || initialNodes);
+  const [edges, setEdges] = useState(sampledataEdges || []);
 
   const onNodesChange = useCallback(
     (changes) =>

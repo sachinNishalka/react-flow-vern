@@ -2,7 +2,6 @@ import { customNodeIdGeneration } from "./customNodeIdGeneration";
 
 export function convertToNodesEdges(nodesEdges) {
   const nodes = [];
-  const edges = convertToEdges(nodesEdges);
 
   //   here we are creating the nodes for incomming data
   nodesEdges.map((node, i) => {
@@ -21,6 +20,7 @@ export function convertToNodesEdges(nodesEdges) {
     });
   });
 
+  const edges = convertToEdges(nodesEdges);
   return { nodes, edges };
 }
 
