@@ -4,12 +4,13 @@ import {
   applyNodeChanges,
   applyEdgeChanges,
   addEdge,
-  useOnSelectionChange,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import BaseNode from "./nodes/BaseNode";
-import { exportJson } from "./helpers/exportJson";
+
 import { convertToNodesEdges } from "./helpers/convertNodesEdges";
+
+import sampleData from "./helpers/sampleData.json";
 
 // defining node types here
 
@@ -76,10 +77,17 @@ export default function App() {
   );
 
   return (
-    <div style={{ width: "100vw", height: "100vh" }}>
+    <div
+      style={{
+        width: "100vw",
+        height: "100vh",
+        backgroundColor: "black",
+        color: "white",
+      }}
+    >
       <button
         className="border px-3 py-2"
-        onClick={() => convertToNodesEdges()}
+        onClick={() => console.log(convertToNodesEdges(sampleData))}
       >
         Export JSON
       </button>

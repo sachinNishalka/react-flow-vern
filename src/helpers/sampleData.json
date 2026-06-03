@@ -1,0 +1,112 @@
+[
+  {
+    "id": "input-node",
+    "type": "input",
+    "inputs": "source",
+    "params": {
+      "columns": [
+        {
+          "name": "test input name"
+        },
+        {
+          "description": "test descripiton"
+        },
+        {
+          "type": "test type"
+        },
+        {
+          "module": "test module"
+        },
+        {
+          "emission_source": "test emission source"
+        },
+        {
+          "origin_correlation_id": "test origin correlation id"
+        },
+        {
+          "owning_business_unit": "test owning business unit"
+        }
+      ]
+    }
+  },
+  {
+    "id": "output-node",
+    "type": "output",
+    "inputs": "estimation-node",
+    "params": {}
+  },
+  {
+    "id": "report-node",
+    "type": "report",
+    "inputs": "input-node",
+    "params": {
+      "columns": [
+        {
+          "name": "report_value_column",
+          "column": "test report value"
+        },
+        {
+          "name": "report_qty_column",
+          "column": "test report qty"
+        },
+        {
+          "name": "factor_mappings",
+          "column": "test factor mapping"
+        }
+      ]
+    }
+  },
+  {
+    "id": "report-gas-node",
+    "type": "reportGas",
+    "inputs": "report-node",
+    "params": {
+      "columns": [
+        {
+          "name": "report_value_column",
+          "column": "test report value coluimn"
+        },
+        {
+          "name": "report_qty_column",
+          "column": "test report qty column"
+        },
+        {
+          "name": "factor_mappings"
+        }
+      ]
+    }
+  },
+  {
+    "id": "estimation-node",
+    "type": "estimation",
+    "inputs": "report-gas-node",
+    "params": {
+      "columns": [
+        {
+          "name": "factor_library",
+          "column": "test factor library"
+        },
+        {
+          "name": "estimation_factor",
+          "column": "test estimation factor"
+        },
+        {
+          "name": "estimation_value_column",
+          "column": "test estimation value"
+        },
+        {
+          "name": "estimation_unit_column",
+          "column": "test estimation unit"
+        },
+        {
+          "name": "output_value_column",
+          "column": "test output value column"
+        },
+        {
+          "name": "output_unit_column",
+          "column": "test output unit"
+        }
+      ]
+    }
+  }
+]

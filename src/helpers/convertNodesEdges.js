@@ -1,152 +1,11 @@
 import { customNodeIdGeneration } from "./customNodeIdGeneration";
 
-const sampleIncomingData = [
-  {
-    id: "input-node",
-    type: "input",
-    inputs: "source",
-    params: {
-      columns: [
-        {
-          name: "test name",
-        },
-        {
-          description: "test description",
-        },
-        {
-          type: "some type",
-        },
-        {
-          module: "some module",
-        },
-        {
-          emission_source: "some emission source",
-        },
-        {
-          origin_correlation_id: "some origin correlaiton id",
-        },
-        {
-          owning_business_unit: "some owning business unit",
-        },
-      ],
-    },
-  },
-  {
-    id: "output-node",
-    type: "output",
-    inputs: "estimation-node",
-    params: {},
-  },
-  {
-    id: "report-node",
-    type: "report",
-    inputs: "input-node",
-    params: {
-      columns: [
-        {
-          name: "report_value_column",
-          column: "some report value",
-        },
-        {
-          name: "report_qty_column",
-          column: "some qty column",
-        },
-        {
-          name: "factor_mappings",
-          column: "some factor mapping",
-        },
-      ],
-    },
-  },
-  {
-    id: "report-gas-node",
-    type: "reportGas",
-    inputs: "source",
-    params: {
-      columns: [
-        {
-          name: "report_value_column",
-          column: "some report value",
-        },
-        {
-          name: "report_qty_column",
-          column: "some report qty",
-        },
-        {
-          name: "factor_mappings",
-        },
-      ],
-    },
-  },
-  {
-    id: "estimation-node",
-    type: "estimation",
-    inputs: "source",
-    params: {
-      columns: [
-        {
-          name: "factor_library",
-          column: "some factor library",
-        },
-        {
-          name: "estimation_factor",
-          column: "some estimation factor",
-        },
-        {
-          name: "estimation_value_column",
-          column: "some estimation column",
-        },
-        {
-          name: "estimation_unit_column",
-          column: "some unit column",
-        },
-        {
-          name: "output_value_column",
-          column: "some output value",
-        },
-        {
-          name: "output_unit_column",
-          column: "some output unit column",
-        },
-      ],
-    },
-  },
-];
-
 export function convertToNodesEdges(nodesEdges) {
   const nodes = [];
-  const convertedDataObj = {
-    id: "input-node",
-    position: {
-      x: -335.5748373101952,
-      y: 0,
-    },
-    data: {
-      type: "input",
-      meta: {
-        inputs: "source",
-        formData: {
-          name: "test",
-          description: "test",
-          type: "test",
-          module: "test",
-          emission_source: "test",
-          origin_correlation_id: "test",
-          owning_business_unit: "test",
-        },
-      },
-    },
-    type: "baseNode",
-    measured: {
-      width: 142,
-      height: 25,
-    },
-    selected: false,
-    dragging: false,
-  };
+  const edges = convertToEdges(nodesEdges);
 
   //   here we are creating the nodes for incomming data
-  sampleIncomingData.map((node, i) => {
+  nodesEdges.map((node, i) => {
     nodes.push({
       id: customNodeIdGeneration(node.type, nodes),
       position: { x: 0, y: i * 100 },
@@ -158,12 +17,91 @@ export function convertToNodesEdges(nodesEdges) {
           formData: convertToFormData(node.type, node.params.columns),
         },
       },
+      type: "baseNode",
     });
   });
 
-  console.log(nodes);
+  return { nodes, edges };
 }
 
-function getNodesMetaData(nodeObj) {}
+function convertToFormData(nodeType, columnsData) {
+  let formData = {};
+  switch (nodeType) {
+    case "input":
+      columnsData.map((column) => {
+        if (column.name != undefined) formData["name"] = column.name;
+        if (column.description != undefined)
+          formData["description"] = column.description;
+        if (column.type != undefined) formData["type"] = column.type;
+        if (column.module != undefined) formData["module"] = column.module;
+        if (column.emission_source != undefined)
+          formData["emission_source"] = column.emission_source;
+        if (column.origin_correlation_id != undefined)
+          formData["origin_correlation_id"] = column.origin_correlation_id;
+        if (column.owning_business_unit != undefined)
+          formData["owning_business_unit"] = column.owning_business_unit;
+      });
+      return formData;
+    case "report":
+      columnsData.map((column) => {
+        if (column.name === "report_value_column" && column.column != undefined)
+          formData["report_value_column"] = column.column;
+        if (column.name === "report_qty_column" && column.column != undefined)
+          formData["report_qty_column"] = column.column;
+        if (column.name === "factor_mappings" && column.column != undefined)
+          formData["factor_mappings"] = column.column;
+      });
+      return formData;
+    case "reportGas":
+      columnsData.map((column) => {
+        if (column.name === "report_value_column" && column.column != undefined)
+          formData["report_value_column"] = column.column;
+        if (column.name === "report_qty_column" && column.column != undefined)
+          formData["report_qty_column"] = column.column;
+        if (column.name === "factor_mappings" && column.column != undefined)
+          formData["factor_mappings"] = column.column;
+      });
+      return formData;
+    case "estimation":
+      columnsData.map((column) => {
+        if (column.name === "factor_library" && column.column != undefined)
+          formData["factor_library"] = column.column;
+        if (column.name === "estimation_factor" && column.column != undefined)
+          formData["estimation_factor"] = column.column;
+        if (
+          column.name === "estimation_value_column" &&
+          column.column != undefined
+        )
+          formData["estimation_value_column"] = column.column;
+        if (
+          column.name === "estimation_unit_column" &&
+          column.column != undefined
+        )
+          formData["estimation_unit_column"] = column.column;
+        if (column.name === "output_value_column" && column.column != undefined)
+          formData["output_value_column"] = column.column;
+        if (column.name === "output_unit_column" && column.column != undefined)
+          formData["output_unit_column"] = column.column;
+      });
+      return formData;
+    default:
+      return formData;
+  }
+}
 
-function convertToFormData(nodeType, columnsData) {}
+function convertToEdges(nodesEdges) {
+  let edges = [];
+  nodesEdges.map((node) => {
+    if (node.type === "input") {
+      return;
+    } else {
+      edges.push({
+        source: node.inputs,
+        target: node.id,
+        id: `edge-${node.inputs}-${node.id}`,
+      });
+    }
+  });
+
+  return edges;
+}
