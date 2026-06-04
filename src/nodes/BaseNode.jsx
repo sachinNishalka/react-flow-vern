@@ -9,7 +9,7 @@ import {
 
 export default function BaseNode({ data, id }) {
   const [expand, setExpand] = useState(false);
-  const { updateNodeData } = useReactFlow();
+  const { getNodes, setNodes, updateNodeData } = useReactFlow();
 
   const registryData = nodesRegistry[data.type];
 
@@ -30,11 +30,29 @@ export default function BaseNode({ data, id }) {
     }
   }, [edges]);
 
+  function handleRemove() {
+    const nodes = getNodes();
+    setNodes(nodes.filter((node) => node.id !== id));
+  }
+
   return (
-    <div className="border">
+    <div className="border px-2 py-1">
       <div className="flex justify-between items-center gap-2">
         <div>{registryData.title}</div>
-        {Form && <button onClick={() => setExpand(!expand)}>Expand</button>}
+        {Form && (
+          <button
+            onClick={() => setExpand(!expand)}
+            className="border px-2 py-1s hover:bg-gray-200 hover:text-gray-800"
+          >
+            {expand ? "Collapse" : "Expand"}
+          </button>
+        )}
+        <button
+          onClick={handleRemove}
+          className="border px-2 py-1s hover:bg-red-200 hover:text-gray-800"
+        >
+          Remove
+        </button>
       </div>
       {expand && Form && (
         <div>
