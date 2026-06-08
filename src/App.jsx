@@ -5,6 +5,7 @@ import {
   applyEdgeChanges,
   addEdge,
   useReactFlow,
+  Background,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import BaseNode from "./nodes/BaseNode";
@@ -26,46 +27,46 @@ const nodeTypes = {
 
 // defined here to prevent re - rendering
 // eslint-disable-next-line react-refresh/only-export-components
-export const initialNodes = [
-  {
-    // this is the id, which differentiate the nodes, same type nodes with different ids
-    id: "input-node",
-    position: { x: 0, y: 0 },
-    // this is the type which gets data from the registry and this is type of the node which will pass to the json
-    data: { type: "input" },
-    type: "baseNode",
-  },
-  {
-    id: "output-node",
-    position: { x: 0, y: 500 },
-    data: { type: "output" },
-    type: "baseNode",
-  },
-  {
-    id: "report-node",
-    position: { x: 0, y: 200 },
-    data: { type: "report" },
-    type: "baseNode",
-  },
-  {
-    id: "report-gas-node",
-    position: { x: 0, y: 300 },
-    data: { type: "report-gas" },
-    type: "baseNode",
-  },
-  {
-    id: "estimation-node",
-    position: { x: 0, y: 400 },
-    data: { type: "estimation" },
-    type: "baseNode",
-  },
-  {
-    id: "select-node",
-    position: { x: 0, y: 400 },
-    data: { type: "select" },
-    type: "baseNode",
-  },
-];
+// export const initialNodes = [
+//   {
+//     // this is the id, which differentiate the nodes, same type nodes with different ids
+//     id: "input-node",
+//     position: { x: 0, y: 0 },
+//     // this is the type which gets data from the registry and this is type of the node which will pass to the json
+//     data: { type: "input" },
+//     type: "baseNode",
+//   },
+//   {
+//     id: "output-node",
+//     position: { x: 0, y: 500 },
+//     data: { type: "output" },
+//     type: "baseNode",
+//   },
+//   {
+//     id: "report-node",
+//     position: { x: 0, y: 200 },
+//     data: { type: "report" },
+//     type: "baseNode",
+//   },
+//   {
+//     id: "report-gas-node",
+//     position: { x: 0, y: 300 },
+//     data: { type: "report-gas" },
+//     type: "baseNode",
+//   },
+//   {
+//     id: "estimation-node",
+//     position: { x: 0, y: 400 },
+//     data: { type: "estimation" },
+//     type: "baseNode",
+//   },
+//   {
+//     id: "select-node",
+//     position: { x: 0, y: 400 },
+//     data: { type: "select" },
+//     type: "baseNode",
+//   },
+// ];
 
 // const initialEdges = [{ id: "n1-n2", source: "n1", target: "n2" }];
 
@@ -75,8 +76,8 @@ export default function App() {
     convertToNodesEdges(sampleData);
 
   // for nodes and edges to the react flow
-  const [nodes, setNodes] = useState(sampledataNodes || initialNodes);
-  const [edges, setEdges] = useState(sampledataEdges || []);
+  const [nodes, setNodes] = useState([]);
+  const [edges, setEdges] = useState([]);
 
   // basic react flow functions
   const onNodesChange = useCallback(
@@ -223,7 +224,9 @@ export default function App() {
               onDragStart={onDragStart}
               onDragOver={onDragOver}
               fitView
-            />
+            >
+              <Background></Background>
+            </ReactFlow>
           </div>
           <div className=" bg-slate-500">
             <Sidebar></Sidebar>
