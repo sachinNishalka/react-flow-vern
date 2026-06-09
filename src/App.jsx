@@ -18,6 +18,8 @@ import { createPortal } from "react-dom";
 import { useDnD } from "./context/DnDProvider";
 import Sidebar from "./components/Sidebar";
 import { customNodeIdGeneration } from "./helpers/customNodeIdGeneration";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 // defining node types here
 
@@ -69,6 +71,8 @@ const nodeTypes = {
 // ];
 
 // const initialEdges = [{ id: "n1-n2", source: "n1", target: "n2" }];
+
+const queryClient = new QueryClient();
 
 export default function App() {
   // for sample data
@@ -162,77 +166,80 @@ export default function App() {
   };
 
   return (
-    <div className="h-screen w-screen bg-black text-white absolute">
-      {openModel &&
-        createPortal(
-          <div className="fixed  inset-0 h-full w-full flex justify-center items-center bg-black/50">
-            <div className="bg-white w-[500px] h-[500px] flex items-center justify-center flex-col">
-              <label>Paste the JSON here</label>
-              <textarea
-                className="w-[400px] h-[400px] border"
-                value={JSON.stringify(jsonOutput, null, 2)}
-                onChange={(e) => setTextAreaValue(e.target.value)}
-              />
-              <div className="flex gap-2 items-end justify-end w-full p-4">
-                <button
-                  className="border px-3 py-2 hover:bg-green-300"
-                  onClick={handleConvertToNodes}
-                >
-                  Ok
-                </button>
-                <button
-                  className="border px-3 py-2 hover:bg-red-300"
-                  onClick={() => setOpenModel(false)}
-                >
-                  Cancel
-                </button>
+    <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools initialIsOpen />
+      <div className="h-screen w-screen bg-black text-white absolute">
+        {openModel &&
+          createPortal(
+            <div className="fixed  inset-0 h-full w-full flex justify-center items-center bg-black/50">
+              <div className="bg-white w-[500px] h-[500px] flex items-center justify-center flex-col">
+                <label>Paste the JSON here</label>
+                <textarea
+                  className="w-[400px] h-[400px] border"
+                  value={JSON.stringify(jsonOutput, null, 2)}
+                  onChange={(e) => setTextAreaValue(e.target.value)}
+                />
+                <div className="flex gap-2 items-end justify-end w-full p-4">
+                  <button
+                    className="border px-3 py-2 hover:bg-green-300"
+                    onClick={handleConvertToNodes}
+                  >
+                    Ok
+                  </button>
+                  <button
+                    className="border px-3 py-2 hover:bg-red-300"
+                    onClick={() => setOpenModel(false)}
+                  >
+                    Cancel
+                  </button>
+                </div>
               </div>
-            </div>
-          </div>,
-          document.body,
-        )}
-      <div className="grid grid-rows-[64px_1fr] h-screen w-full">
-        <div>
-          <button
-            className="border px-3 py-2"
-            onClick={() => console.log(convertToNodesEdges(sampleData))}
-          >
-            Convert TO JSON
-          </button>
-          <button
-            className="border px-3 py-2"
-            onClick={() => setOpenModel(true)}
-          >
-            Convert TO Nodes
-          </button>
-        </div>
-        <div className="grid grid-cols-[350px_1fr_200px] h-full">
-          <div className="bg-slate-800 p-8 overflow-hidden relative">
-            <pre className="text-xs whitespace-pre-wrap  overflow-y-scroll absolute inset-0 p-4">
-              {JSON.stringify(jsonOutput, null, 2)}
-            </pre>
-          </div>
-          <div className="">
-            <ReactFlow
-              nodes={nodes}
-              edges={edges}
-              onNodesChange={onNodesChange}
-              onEdgesChange={onEdgesChange}
-              onConnect={onConnect}
-              nodeTypes={nodeTypes}
-              onDrop={onDrop}
-              onDragStart={onDragStart}
-              onDragOver={onDragOver}
-              fitView
+            </div>,
+            document.body,
+          )}
+        <div className="grid grid-rows-[64px_1fr] h-screen w-full">
+          <div>
+            <button
+              className="border px-3 py-2"
+              onClick={() => console.log(convertToNodesEdges(sampleData))}
             >
-              <Background></Background>
-            </ReactFlow>
+              Convert TO JSON
+            </button>
+            <button
+              className="border px-3 py-2"
+              onClick={() => setOpenModel(true)}
+            >
+              Convert TO Nodes
+            </button>
           </div>
-          <div className=" bg-slate-500">
-            <Sidebar></Sidebar>
+          <div className="grid grid-cols-[350px_1fr_200px] h-full">
+            <div className="bg-slate-800 p-8 overflow-hidden relative">
+              <pre className="text-xs whitespace-pre-wrap  overflow-y-scroll absolute inset-0 p-4">
+                {JSON.stringify(jsonOutput, null, 2)}
+              </pre>
+            </div>
+            <div className="">
+              <ReactFlow
+                nodes={nodes}
+                edges={edges}
+                onNodesChange={onNodesChange}
+                onEdgesChange={onEdgesChange}
+                onConnect={onConnect}
+                nodeTypes={nodeTypes}
+                onDrop={onDrop}
+                onDragStart={onDragStart}
+                onDragOver={onDragOver}
+                fitView
+              >
+                <Background></Background>
+              </ReactFlow>
+            </div>
+            <div className=" bg-slate-500">
+              <Sidebar></Sidebar>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </QueryClientProvider>
   );
 }
