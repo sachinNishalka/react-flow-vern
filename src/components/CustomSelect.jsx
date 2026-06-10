@@ -9,11 +9,7 @@ const Checkbox = ({ children, ...props }) => (
   </label>
 );
 
-export default function CustomSelect({
-  options,
-  onFactorLibraryChange,
-  isMulti,
-}) {
+export default function CustomSelect({ options, onItemChange, isMulti }) {
   const [isClearable, setIsClearable] = useState(true);
   const [isSearchable, setIsSearchable] = useState(true);
   const [isDisabled, setIsDisabled] = useState(false);
@@ -34,7 +30,7 @@ export default function CustomSelect({
         isSearchable={isSearchable}
         name="select-factor-library"
         options={options}
-        onChange={(selectedOption) => onFactorLibraryChange(selectedOption)}
+        onChange={(selectedOption) => onItemChange(selectedOption)}
         isMulti={isMulti}
       />
 

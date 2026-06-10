@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { getFactorLibraries } from "../services/factorLibrary";
+import { factorLibraries } from "../services/factorLibrary";
 
 export function useGetFactorLibraries() {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["factorLibraries"],
-    queryFn: getFactorLibraries,
+    queryFn: factorLibraries,
   });
   return { data, isLoading, isError };
 }
