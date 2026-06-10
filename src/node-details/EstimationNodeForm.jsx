@@ -72,6 +72,7 @@ export default function EstimationNodeForm({ nodeId }) {
         type="text"
         {...register("output_unit_column")}
       />
+
       <button className="border px-3 py-2 hover:bg-green-300" type="submit">
         Submit
       </button>

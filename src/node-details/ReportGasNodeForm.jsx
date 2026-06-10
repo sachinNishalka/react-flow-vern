@@ -1,6 +1,5 @@
 import { useEdges, useNodesState, useReactFlow } from "@xyflow/react";
 import { useForm } from "react-hook-form";
-import { initialNodes } from "../App";
 import { useEffect } from "react";
 
 export default function ReportGasNodeForm({ nodeId, nodeType }) {
