@@ -58,6 +58,8 @@ function convertToFormData(nodeType, columnsData) {
           formData["report_qty_column"] = column.column;
         if (column.name === "factor_mappings" && column.column != undefined)
           formData["factor_mappings"] = column.column;
+        if (column.name === "factor_library" && column.column != undefined)
+          formData["factor_library"] = column.column;
       });
       return formData;
     case "report-gas":
@@ -68,6 +70,8 @@ function convertToFormData(nodeType, columnsData) {
           formData["report_qty_column"] = column.column;
         if (column.name === "factor_mappings" && column.column != undefined)
           formData["factor_mappings"] = column.column;
+        if (column.name === "factor_library" && column.column != undefined)
+          formData["factor_library"] = column.column;
       });
       return formData;
     case "estimation":

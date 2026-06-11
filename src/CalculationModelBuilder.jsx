@@ -125,7 +125,7 @@ export default function CalculationModelBuilder() {
               <label>Paste the JSON here</label>
               <textarea
                 className="w-[400px] h-[400px] border"
-                value={JSON.stringify(jsonOutput, null, 2)}
+                // value={JSON.stringify(jsonOutput, null, 2)}
                 onChange={(e) => setTextAreaValue(e.target.value)}
               />
               <div className="flex gap-2 items-end justify-end w-full p-4">

@@ -6,7 +6,13 @@ import CustomSelect from "../components/CustomSelect";
 import { useGetEstimationFactors } from "./useGetEstimationFactors";
 
 export default function ReportNodeForm({ nodeId }) {
-  const { register, handleSubmit, setValue } = useForm();
+  const [factorLibarary, setFactorLibrary] = useState(null);
+  const [estimationFactor, setEstimationFactor] = useState(null);
+
+  const [filteredEstimationFactors, setFilteredEstimationFactors] =
+    useState(null);
+
+  const { register, handleSubmit, setValue, getValues } = useForm();
 
   const { getNodes, updateNodeData } = useReactFlow();
 
@@ -20,7 +26,11 @@ export default function ReportNodeForm({ nodeId }) {
     updateNodeData(nodeId, {
       meta: {
         inputs: connection?.source || "source",
-        formData: data,
+        formData: {
+          ...data,
+          factor_library: factorLibarary,
+          factor_mappings: estimationFactor,
+        },
       },
     });
   };
@@ -28,19 +38,41 @@ export default function ReportNodeForm({ nodeId }) {
   useEffect(() => {
     const node = nodes.find((node) => node.id === nodeId);
     const formData = node?.data?.meta?.formData;
-    setValue("report_value_column", formData?.report_value_column);
-    setValue("report_qty_column", formData?.report_qty_column);
-    setValue("factor_mappings", formData?.factor_mappings);
-    setValue("factor_library", formData?.factor_library);
+
+    setValue(
+      "report_value_column",
+      getValues("report_value_column") || formData?.report_value_column,
+    );
+
+    setValue(
+      "report_qty_column",
+      getValues("report_qty_column") || formData?.report_qty_column,
+    );
+
+    setFactorLibrary(factorLibarary || formData?.factor_library);
+    setEstimationFactor(estimationFactor || formData?.factor_mappings);
+
+    console.log("factor Library" + factorLibarary);
+    console.log("factor mappings" + estimationFactor);
   }, [nodes]);
+
+  // filtering estimation factors according to the factor libraries
+
+  useEffect(() => {
+    if (factorLibarary != null) {
+      let filteredFactors = estimationFactors?.filter(
+        (estimationFactor) =>
+          estimationFactor.factorLibraryId === factorLibarary.value,
+      );
+      setFilteredEstimationFactors(filteredFactors);
+    }
+  }, [factorLibarary]);
 
   const { data: factorLibraries, isLoading: isFactorLibrariesLoading } =
     useGetFactorLibraries();
+
   const { data: estimationFactors, isLoading: isEstimationFactorsLoading } =
     useGetEstimationFactors();
-
-  const [factorLibarary, setFactorLibrary] = useState(null);
-  const [estimationFactor, setEstimationFactor] = useState(null);
 
   if (isFactorLibrariesLoading) return <div>Loading...</div>;
 
@@ -54,6 +86,13 @@ export default function ReportNodeForm({ nodeId }) {
     label: factor.name,
   }));
 
+  const filteredEstimationFactorOPtions = filteredEstimationFactors?.map(
+    (factor) => ({
+      value: factor.id,
+      label: factor.name,
+    }),
+  );
+
   console.log("factor library ", factorLibarary);
   return (
     <form
@@ -65,6 +104,7 @@ export default function ReportNodeForm({ nodeId }) {
       <CustomSelect
         options={optionsFactorLibraries}
         onItemChange={setFactorLibrary}
+        value={factorLibarary}
       ></CustomSelect>
 
       <label>Report Value Column</label>
@@ -83,9 +123,10 @@ export default function ReportNodeForm({ nodeId }) {
 
       <label>Factor Mappings</label>
       <CustomSelect
-        options={estimationFactorsOptions}
+        options={filteredEstimationFactorOPtions || estimationFactorsOptions}
         isMulti={true}
         onItemChange={setEstimationFactor}
+        value={estimationFactor}
       ></CustomSelect>
 
       <button className="border px-3 py-2 hover:bg-green-300" type="submit">
