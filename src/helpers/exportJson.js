@@ -51,6 +51,10 @@ function getColumnData(formData, nodeType) {
           name: "factor_mappings",
           column: formData.factor_mappings,
         },
+        {
+          name: "factor_library",
+          column: formData.factor_library,
+        },
       ];
     case "report-gas":
       return [

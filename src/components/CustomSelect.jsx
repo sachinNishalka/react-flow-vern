@@ -9,7 +9,12 @@ const Checkbox = ({ children, ...props }) => (
   </label>
 );
 
-export default function CustomSelect({ options, onItemChange, isMulti }) {
+export default function CustomSelect({
+  options,
+  onItemChange,
+  isMulti,
+  value,
+}) {
   const [isClearable, setIsClearable] = useState(true);
   const [isSearchable, setIsSearchable] = useState(true);
   const [isDisabled, setIsDisabled] = useState(false);
@@ -19,10 +24,10 @@ export default function CustomSelect({ options, onItemChange, isMulti }) {
   return (
     <>
       <Select
+        value={value}
         // bug: AI could not found this, only github conversations did
         className="basic-single nodrag nopan"
         classNamePrefix="select"
-        defaultValue={options?.[0] || null}
         isDisabled={isDisabled}
         isLoading={isLoading}
         isClearable={isClearable}
@@ -32,6 +37,9 @@ export default function CustomSelect({ options, onItemChange, isMulti }) {
         options={options}
         onChange={(selectedOption) => onItemChange(selectedOption)}
         isMulti={isMulti}
+        styles={{
+          option: (baseStyles) => ({ ...baseStyles, color: "black" }),
+        }}
       />
 
       <div

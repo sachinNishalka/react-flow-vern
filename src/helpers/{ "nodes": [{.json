@@ -1,0 +1,41 @@
+{
+  "nodes": [
+    {
+      "id": "report-node",
+      "type": "report",
+      "inputs": "source",
+      "params": {
+        "columns": [
+          {
+            "name": "report_value_column",
+            "column": "test"
+          },
+          {
+            "name": "report_qty_column",
+            "column": "final testing report qty"
+          },
+          {
+            "name": "factor_mappings",
+            "column": [
+              {
+                "value": 1,
+                "label": "testing-estimation-factor"
+              },
+              {
+                "value": 3,
+                "label": "testing-some-other-factor"
+              }
+            ]
+          },
+          {
+            "name": "factor_library",
+            "column": {
+              "value": 2,
+              "label": "Test Factor Library"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

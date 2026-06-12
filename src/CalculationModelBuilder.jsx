@@ -26,6 +26,9 @@ const nodeTypes = {
 };
 
 export default function CalculationModelBuilder() {
+  // for the jwt toke from the backend
+  const [token, setToken] = useState("");
+
   // for sample data
   const { nodes: sampledataNodes, edges: sampledataEdges } =
     convertToNodesEdges(sampleData);
@@ -116,6 +119,11 @@ export default function CalculationModelBuilder() {
     event.dataTransfer.effectAllowed = "move";
   };
 
+  function updateTokenToLocalStorage() {
+    localStorage.setItem("token", token);
+    console.log("updating the token to the local storage");
+  }
+
   return (
     <div className="h-screen w-screen bg-black text-white absolute">
       {openModel &&
@@ -125,7 +133,7 @@ export default function CalculationModelBuilder() {
               <label>Paste the JSON here</label>
               <textarea
                 className="w-[400px] h-[400px] border"
-                value={JSON.stringify(jsonOutput, null, 2)}
+                // value={JSON.stringify(jsonOutput, null, 2)}
                 onChange={(e) => setTextAreaValue(e.target.value)}
               />
               <div className="flex gap-2 items-end justify-end w-full p-4">
@@ -147,19 +155,37 @@ export default function CalculationModelBuilder() {
           document.body,
         )}
       <div className="grid grid-rows-[64px_1fr] h-screen w-full">
-        <div>
-          <button
-            className="border px-3 py-2"
-            onClick={() => console.log(convertToNodesEdges(sampleData))}
-          >
-            Convert TO JSON
-          </button>
-          <button
-            className="border px-3 py-2"
-            onClick={() => setOpenModel(true)}
-          >
-            Convert TO Nodes
-          </button>
+        <div className="flex items-center justify-between px-4 py-2 gap-2">
+          <div className="">
+            <button
+              className="border px-3 py-2"
+              onClick={() => console.log(convertToNodesEdges(sampleData))}
+            >
+              Convert TO JSON
+            </button>
+            <button
+              className="border px-3 py-2"
+              onClick={() => setOpenModel(true)}
+            >
+              Convert TO Nodes
+            </button>
+          </div>
+          <div className="flex flex-1 items-center justify-end gap-2">
+            <textarea
+              className="border-2 w-full text-center "
+              placeholder="paste the token here"
+              value={token}
+              onChange={(e) => setToken(e.target.value)}
+            ></textarea>
+            <button
+              className="w-64 border-2 px-3 py-2 hover:bg-green-400 hover:text-black"
+              onClick={updateTokenToLocalStorage}
+            >
+              {localStorage.getItem("token") !== null
+                ? "Change Token"
+                : "Update Token"}
+            </button>
+          </div>
         </div>
         <div className="grid grid-cols-[350px_1fr_200px] h-full">
           <div className="bg-slate-800 p-8 overflow-hidden relative">
