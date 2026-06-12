@@ -4,13 +4,19 @@ import { useEffect, useState } from "react";
 import { useGetFactorLibraries } from "./useGetFactorLibraries";
 import CustomSelect from "../components/CustomSelect";
 import { useGetEstimationFactors } from "./useGetEstimationFactors";
+import { useGetFactorMappings } from "./useGetFactorMappings";
 
 export default function ReportNodeForm({ nodeId }) {
   const [factorLibarary, setFactorLibrary] = useState(null);
-  const [estimationFactor, setEstimationFactor] = useState(null);
 
-  const [filteredEstimationFactors, setFilteredEstimationFactors] =
-    useState(null);
+  // TODO: should change to factor mappings
+  // const [estimationFactor, setEstimationFactor] = useState(null);
+  const [factorMappings, setFactorMappings] = useState();
+
+  // TODO: should change to filterd factor mappings
+  // const [filteredEstimationFactors, setFilteredEstimationFactors] =
+  // useState(null);
+  const [filteredFactorMappings, setFilteredFactorMappings] = useState(null);
 
   const { register, handleSubmit, setValue, getValues } = useForm();
 
@@ -29,7 +35,8 @@ export default function ReportNodeForm({ nodeId }) {
         formData: {
           ...data,
           factor_library: factorLibarary,
-          factor_mappings: estimationFactor,
+          // TODO: shoudl change to factor mappings
+          factor_mappings: factorMappings,
         },
       },
     });
@@ -50,43 +57,55 @@ export default function ReportNodeForm({ nodeId }) {
     );
 
     setFactorLibrary(factorLibarary || formData?.factor_library);
-    setEstimationFactor(estimationFactor || formData?.factor_mappings);
+
+    // TODO: should change to factor mappings
+    // setEstimationFactor(estimationFactor || formData?.factor_mappings);
+    setFactorMappings(factorMappings || formData?.factor_mappings);
 
     console.log("factor Library" + factorLibarary);
-    console.log("factor mappings" + estimationFactor);
+    // TODO: should change to factor mappings
+    // console.log("factor mappings" + estimationFactor);
   }, [nodes]);
 
   // filtering estimation factors according to the factor libraries
 
-  useEffect(() => {
-    if (factorLibarary != null) {
-      let filteredFactors = estimationFactors?.filter(
-        (estimationFactor) =>
-          estimationFactor.factorLibraryId === factorLibarary.value,
-      );
-      setFilteredEstimationFactors(filteredFactors);
-    }
-  }, [factorLibarary]);
-
   const { data: factorLibraries, isLoading: isFactorLibrariesLoading } =
     useGetFactorLibraries();
 
-  const { data: estimationFactors, isLoading: isEstimationFactorsLoading } =
-    useGetEstimationFactors();
+  // TODO: should make a hook for facot mappings
+  // const { data: estimationFactors, isLoading: isEstimationFactorsLoading } =
+  //   useGetEstimationFactors();
 
-  if (isFactorLibrariesLoading) return <div>Loading...</div>;
+  const { data: factorMappingsData, isLoadig: isLoadingFactorMappings } =
+    useGetFactorMappings();
+
+  useEffect(() => {
+    if (factorLibarary != null) {
+      let filteredFactors = factorMappingsData?.filter(
+        (factorMapping) =>
+          factorMapping.factorLibraryId === factorLibarary.value,
+      );
+      // TODO: this should be changed to factor mappings
+      setFilteredFactorMappings(filteredFactors);
+    }
+  }, [factorLibarary]);
+
+  if (isFactorLibrariesLoading && isLoadingFactorMappings)
+    return <div>Loading...</div>;
 
   const optionsFactorLibraries = factorLibraries?.map((libarary) => ({
     value: libarary.id,
     label: libarary.name,
   }));
 
-  const estimationFactorsOptions = estimationFactors?.map((factor) => ({
+  // TODO: this should be changed to factor mappings
+  const factorMappingOptions = factorMappingsData?.map((factor) => ({
     value: factor.id,
     label: factor.name,
   }));
 
-  const filteredEstimationFactorOPtions = filteredEstimationFactors?.map(
+  // TODO: this should be changed to factor mappings
+  const filteredEstimationFactorOPtions = filteredFactorMappings?.map(
     (factor) => ({
       value: factor.id,
       label: factor.name,
@@ -123,10 +142,10 @@ export default function ReportNodeForm({ nodeId }) {
 
       <label>Factor Mappings</label>
       <CustomSelect
-        options={filteredEstimationFactorOPtions || estimationFactorsOptions}
+        options={filteredEstimationFactorOPtions || factorMappingOptions}
         isMulti={true}
-        onItemChange={setEstimationFactor}
-        value={estimationFactor}
+        onItemChange={setFactorMappings}
+        value={factorMappings}
       ></CustomSelect>
 
       <button className="border px-3 py-2 hover:bg-green-300" type="submit">
