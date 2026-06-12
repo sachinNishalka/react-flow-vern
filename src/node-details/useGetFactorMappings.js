@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { estimationFactor } from "../services/estimationFactor";
+import { factorMapping } from "../services/factorMapping";
 
-export function useGetEstimationFactors() {
+export function useGetFactorMappings() {
   const { data, isLoading, error } = useQuery({
     queryKey: ["estimationFactors"],
-    queryFn: estimationFactor,
+    queryFn: factorMapping,
   });
 
   return {
