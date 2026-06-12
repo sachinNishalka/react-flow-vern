@@ -1,24 +1,23 @@
 {
   "nodes": [
     {
-      "id": "report-node",
-      "type": "report",
+      "id": "estimation-node",
+      "type": "estimation",
       "inputs": "source",
       "params": {
         "columns": [
           {
-            "name": "report_value_column",
-            "column": "test"
+            "name": "factor_library",
+            "column": {
+              "value": 2,
+              "label": "Test Factor Library"
+            }
           },
           {
-            "name": "report_qty_column",
-            "column": "final testing report qty"
-          },
-          {
-            "name": "factor_mappings",
+            "name": "estimation_factor",
             "column": [
               {
-                "value": 1,
+                "value": 2,
                 "label": "testing-estimation-factor"
               },
               {
@@ -28,11 +27,20 @@
             ]
           },
           {
-            "name": "factor_library",
-            "column": {
-              "value": 2,
-              "label": "Test Factor Library"
-            }
+            "name": "estimation_value_column",
+            "column": "test estimation value"
+          },
+          {
+            "name": "estimation_unit_column",
+            "column": "some unit column"
+          },
+          {
+            "name": "output_value_column",
+            "column": "sample ouput value"
+          },
+          {
+            "name": "output_unit_column",
+            "column": "testing output unit"
           }
         ]
       }
