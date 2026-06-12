@@ -1,9 +1,9 @@
 import axios from "axios";
-import { token } from "./token";
 
 export async function factorLibraries() {
+  let token = localStorage.getItem("token");
   const response = await axios.get(
-    "http://localhost:8090/uiconnector/api/v1/factorlibrary",
+    "http://152.67.100.211:8090/uiconnector/api/v1/factorlibrary",
     {
       headers: {
         Authorization: `Bearer ${token}`,
